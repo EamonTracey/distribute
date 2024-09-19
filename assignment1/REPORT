@@ -1,0 +1,362 @@
+Eamon Tracey
+Distributed Systems Assignment 1
+-----
+Test1.py
+Elapsed time (s): 5.658790588378906
+Number of operations: 60000000
+Average time per operation (s): 9.431317647298178e-08
+Elapsed time (s): 5.641399383544922
+Number of operations: 60000000
+Average time per operation (s): 9.402332305908203e-08
+Elapsed time (s): 5.82236909866333
+Number of operations: 60000000
+Average time per operation (s): 9.703948497772217e-08
+Elapsed time (s): 5.878223419189453
+Number of operations: 60000000
+Average time per operation (s): 9.797039031982422e-08
+Elapsed time (s): 5.670923233032227
+Number of operations: 60000000
+Average time per operation (s): 9.451538721720378e-08
+Elapsed time (s): 6.287005424499512
+Number of operations: 60000000
+Average time per operation (s): 1.0478342374165853e-07
+Elapsed time (s): 5.879106760025024
+Number of operations: 60000000
+Average time per operation (s): 9.798511266708375e-08
+Elapsed time (s): 5.873324632644653
+Number of operations: 60000000
+Average time per operation (s): 9.788874387741089e-08
+Elapsed time (s): 5.551141977310181
+Number of operations: 60000000
+Average time per operation (s): 9.251903295516968e-08
+Elapsed time (s): 5.51837420463562
+Number of operations: 60000000
+Average time per operation (s): 9.197290341059367e-08
+
+Test2.py
+Elapsed time (s): 3.4402387142181396
+Number of operations: 1500
+Average time per operation (s): 0.0022934924761454263
+Elapsed time (s): 3.452577829360962
+Number of operations: 1500
+Average time per operation (s): 0.002301718552907308
+Elapsed time (s): 3.3332021236419678
+Number of operations: 1500
+Average time per operation (s): 0.002222134749094645
+Elapsed time (s): 3.5192477703094482
+Number of operations: 1500
+Average time per operation (s): 0.002346165180206299
+Elapsed time (s): 3.366593599319458
+Number of operations: 1500
+Average time per operation (s): 0.0022443957328796386
+Elapsed time (s): 3.364713430404663
+Number of operations: 1500
+Average time per operation (s): 0.002243142286936442
+Elapsed time (s): 3.3759007453918457
+Number of operations: 1500
+Average time per operation (s): 0.002250600496927897
+Elapsed time (s): 3.377945899963379
+Number of operations: 1500
+Average time per operation (s): 0.0022519639333089194
+Elapsed time (s): 3.4109714031219482
+Number of operations: 1500
+Average time per operation (s): 0.002273980935414632
+Elapsed time (s): 3.4238979816436768
+Number of operations: 1500
+Average time per operation (s): 0.002282598654429118
+
+Test3.py
+Elapsed time (s): 5.678091049194336
+Number of operations: 200000
+Average time per operation (s): 2.839045524597168e-05
+Elapsed time (s): 5.740771055221558
+Number of operations: 200000
+Average time per operation (s): 2.870385527610779e-05
+Elapsed time (s): 5.646783113479614
+Number of operations: 200000
+Average time per operation (s): 2.8233915567398073e-05
+Elapsed time (s): 5.752664089202881
+Number of operations: 200000
+Average time per operation (s): 2.8763320446014405e-05
+Elapsed time (s): 5.268609046936035
+Number of operations: 200000
+Average time per operation (s): 2.6343045234680176e-05
+Elapsed time (s): 5.413378477096558
+Number of operations: 200000
+Average time per operation (s): 2.7066892385482788e-05
+Elapsed time (s): 5.6918699741363525
+Number of operations: 200000
+Average time per operation (s): 2.8459349870681763e-05
+Elapsed time (s): 5.485933780670166
+Number of operations: 200000
+Average time per operation (s): 2.742966890335083e-05
+Elapsed time (s): 5.587271213531494
+Number of operations: 200000
+Average time per operation (s): 2.793635606765747e-05
+Elapsed time (s): 5.532603979110718
+Number of operations: 200000
+Average time per operation (s): 2.7663019895553588e-05
+
+Test4.py
+Elapsed time (s): 5.3239898681640625
+Number of operations: 10000000
+Average time per operation (s): 5.323989868164063e-07
+Elapsed time (s): 5.292874813079834
+Number of operations: 10000000
+Average time per operation (s): 5.292874813079834e-07
+Elapsed time (s): 5.3122313022613525
+Number of operations: 10000000
+Average time per operation (s): 5.312231302261353e-07
+Elapsed time (s): 5.3431947231292725
+Number of operations: 10000000
+Average time per operation (s): 5.343194723129272e-07
+Elapsed time (s): 5.382943391799927
+Number of operations: 10000000
+Average time per operation (s): 5.382943391799927e-07
+Elapsed time (s): 5.385831594467163
+Number of operations: 10000000
+Average time per operation (s): 5.385831594467163e-07
+Elapsed time (s): 5.343117952346802
+Number of operations: 10000000
+Average time per operation (s): 5.343117952346801e-07
+Elapsed time (s): 5.353644371032715
+Number of operations: 10000000
+Average time per operation (s): 5.353644371032715e-07
+Elapsed time (s): 5.34956431388855
+Number of operations: 10000000
+Average time per operation (s): 5.34956431388855e-07
+Elapsed time (s): 5.38661003112793
+Number of operations: 10000000
+Average time per operation (s): 5.386610031127929e-07
+
+Test5.py
+Elapsed time (s): 5.305168390274048
+Number of operations: 25000000
+Average time per operation (s): 2.122067356109619e-07
+Elapsed time (s): 5.218025207519531
+Number of operations: 25000000
+Average time per operation (s): 2.0872100830078125e-07
+Elapsed time (s): 5.2142088413238525
+Number of operations: 25000000
+Average time per operation (s): 2.085683536529541e-07
+Elapsed time (s): 5.205520153045654
+Number of operations: 25000000
+Average time per operation (s): 2.0822080612182616e-07
+Elapsed time (s): 5.537063837051392
+Number of operations: 25000000
+Average time per operation (s): 2.2148255348205565e-07
+Elapsed time (s): 5.159486293792725
+Number of operations: 25000000
+Average time per operation (s): 2.06379451751709e-07
+Elapsed time (s): 5.168118000030518
+Number of operations: 25000000
+Average time per operation (s): 2.067247200012207e-07
+Elapsed time (s): 5.023791074752808
+Number of operations: 25000000
+Average time per operation (s): 2.009516429901123e-07
+Elapsed time (s): 5.530210733413696
+Number of operations: 25000000
+Average time per operation (s): 2.2120842933654784e-07
+Elapsed time (s): 5.188206195831299
+Number of operations: 25000000
+Average time per operation (s): 2.0752824783325196e-07
+
+Test6.py
+Elapsed time (s): 2.482832193374634
+Number of operations: 250
+Average time per operation (s): 0.009931328773498536
+Elapsed time (s): 2.511690378189087
+Number of operations: 250
+Average time per operation (s): 0.010046761512756347
+Elapsed time (s): 2.787722110748291
+Number of operations: 250
+Average time per operation (s): 0.011150888442993164
+Elapsed time (s): 2.7848520278930664
+Number of operations: 250
+Average time per operation (s): 0.011139408111572265
+Elapsed time (s): 2.4808952808380127
+Number of operations: 250
+Average time per operation (s): 0.009923581123352052
+Elapsed time (s): 2.480417013168335
+Number of operations: 250
+Average time per operation (s): 0.00992166805267334
+Elapsed time (s): 2.783242702484131
+Number of operations: 250
+Average time per operation (s): 0.011132970809936523
+Elapsed time (s): 2.480881929397583
+Number of operations: 250
+Average time per operation (s): 0.009923527717590332
+Elapsed time (s): 3.389791250228882
+Number of operations: 250
+Average time per operation (s): 0.013559165000915528
+Elapsed time (s): 2.4865312576293945
+Number of operations: 250
+Average time per operation (s): 0.009946125030517578
+
+Test7.py
+Elapsed time (s): 3.6541199684143066
+Number of operations: 150
+Average time per operation (s): 0.024360799789428712
+Elapsed time (s): 3.8443405628204346
+Number of operations: 150
+Average time per operation (s): 0.025628937085469563
+Elapsed time (s): 4.672529220581055
+Number of operations: 150
+Average time per operation (s): 0.0311501948038737
+Elapsed time (s): 3.7217037677764893
+Number of operations: 150
+Average time per operation (s): 0.024811358451843263
+Elapsed time (s): 4.140215158462524
+Number of operations: 150
+Average time per operation (s): 0.027601434389750164
+Elapsed time (s): 3.629718065261841
+Number of operations: 150
+Average time per operation (s): 0.024198120435078938
+Elapsed time (s): 3.993910789489746
+Number of operations: 150
+Average time per operation (s): 0.02662607192993164
+Elapsed time (s): 3.7662744522094727
+Number of operations: 150
+Average time per operation (s): 0.025108496348063152
+Elapsed time (s): 4.62440037727356
+Number of operations: 150
+Average time per operation (s): 0.0308293358484904
+Elapsed time (s): 3.7585227489471436
+Number of operations: 150
+Average time per operation (s): 0.02505681832631429
+
+Test8.py
+Elapsed time (s): 3.8697166442871094
+Number of operations: 1500
+Average time per operation (s): 0.0025798110961914064
+Elapsed time (s): 3.8757288455963135
+Number of operations: 1500
+Average time per operation (s): 0.0025838192303975424
+Elapsed time (s): 4.055189609527588
+Number of operations: 1500
+Average time per operation (s): 0.0027034597396850585
+Elapsed time (s): 3.824545383453369
+Number of operations: 1500
+Average time per operation (s): 0.002549696922302246
+Elapsed time (s): 3.971405506134033
+Number of operations: 1500
+Average time per operation (s): 0.002647603670756022
+Elapsed time (s): 3.796443223953247
+Number of operations: 1500
+Average time per operation (s): 0.0025309621493021647
+Elapsed time (s): 3.9045560359954834
+Number of operations: 1500
+Average time per operation (s): 0.0026030373573303223
+Elapsed time (s): 3.8073911666870117
+Number of operations: 1500
+Average time per operation (s): 0.002538260777791341
+Elapsed time (s): 3.824491262435913
+Number of operations: 1500
+Average time per operation (s): 0.002549660841623942
+Elapsed time (s): 3.724961042404175
+Number of operations: 1500
+Average time per operation (s): 0.002483307361602783
+
+Test9.py
+Elapsed time (s): 4.653646945953369
+Number of operations: 7777
+Average time per operation (s): 0.0005983858744957399
+Elapsed time (s): 5.497495174407959
+Number of operations: 7777
+Average time per operation (s): 0.000706891497287895
+Elapsed time (s): 4.683628797531128
+Number of operations: 7777
+Average time per operation (s): 0.0006022410695038097
+Elapsed time (s): 4.818636655807495
+Number of operations: 7777
+Average time per operation (s): 0.0006196009586996908
+Elapsed time (s): 4.882962226867676
+Number of operations: 7777
+Average time per operation (s): 0.0006278722163903402
+Elapsed time (s): 4.655114650726318
+Number of operations: 7777
+Average time per operation (s): 0.0005985745982674962
+Elapsed time (s): 4.804879426956177
+Number of operations: 7777
+Average time per operation (s): 0.0006178319952367464
+Elapsed time (s): 4.793388366699219
+Number of operations: 7777
+Average time per operation (s): 0.00061635442544673
+Elapsed time (s): 4.9665491580963135
+Number of operations: 7777
+Average time per operation (s): 0.0006386201823449034
+Elapsed time (s): 4.865143775939941
+Number of operations: 7777
+Average time per operation (s): 0.0006255810435823507
+
+Test10.py
+Elapsed time (s): 6.292305946350098
+Number of operations: 3456
+Average time per operation (s): 0.00182069037799482
+Elapsed time (s): 6.25673770904541
+Number of operations: 3456
+Average time per operation (s): 0.0018103986426636024
+Elapsed time (s): 6.0899481773376465
+Number of operations: 3456
+Average time per operation (s): 0.001762137782794458
+Elapsed time (s): 6.281723737716675
+Number of operations: 3456
+Average time per operation (s): 0.0018176283963300564
+Elapsed time (s): 6.341274738311768
+Number of operations: 3456
+Average time per operation (s): 0.0018348595886318773
+Elapsed time (s): 5.81767463684082
+Number of operations: 3456
+Average time per operation (s): 0.001683354929641441
+Elapsed time (s): 6.276816129684448
+Number of operations: 3456
+Average time per operation (s): 0.0018162083708577687
+Elapsed time (s): 6.0286195278167725
+Number of operations: 3456
+Average time per operation (s): 0.00174439222448402
+Elapsed time (s): 5.99481201171875
+Number of operations: 3456
+Average time per operation (s): 0.0017346099570945458
+Elapsed time (s): 6.071224927902222
+Number of operations: 3456
+Average time per operation (s): 0.0017567201758976335
+
+-----
+Table of Average Times per Operation
+
+|           | 1        | 2        | 3        | 4        | 5        | 6        | 7        | 8        | 9        | 10       |
+| --------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- | -------- |
+| Test1.py  | 9.43E-08 | 9.40E-08 | 9.70E-08 | 9.80E-08 | 9.45E-08 | 1.05E-07 | 9.80E-08 | 9.79E-08 | 9.25E-08 | 9.20E-08 |
+| Test2.py  | 2.29E-03 | 2.30E-03 | 2.22E-03 | 2.35E-03 | 2.24E-03 | 2.24E-03 | 2.25E-03 | 2.25E-03 | 2.27E-03 | 2.28E-03 |
+| Test3.py  | 2.84E-05 | 2.87E-05 | 2.82E-05 | 2.88E-05 | 2.63E-05 | 2.71E-05 | 2.85E-05 | 2.74E-05 | 2.79E-05 | 2.77E-05 |
+| Test4.py  | 5.32E-07 | 5.29E-07 | 5.31E-07 | 5.34E-07 | 5.38E-07 | 5.39E-07 | 5.34E-07 | 5.35E-07 | 5.35E-07 | 5.39E-07 |
+| Test5.py  | 2.12E-07 | 2.09E-07 | 2.09E-07 | 2.08E-07 | 2.21E-07 | 2.06E-07 | 2.07E-07 | 2.01E-07 | 2.21E-07 | 2.08E-07 |
+| Test6.py  | 9.93E-03 | 1.00E-02 | 1.12E-02 | 1.11E-02 | 9.92E-03 | 9.92E-03 | 1.11E-02 | 9.92E-03 | 1.36E-02 | 9.95E-03 |
+| Test7.py  | 2.44E-02 | 2.56E-02 | 3.12E-02 | 2.48E-02 | 2.76E-02 | 2.42E-02 | 2.66E-02 | 2.51E-02 | 3.08E-02 | 2.51E-02 |
+| Test8.py  | 2.58E-03 | 2.58E-03 | 2.70E-03 | 2.55E-03 | 2.65E-03 | 2.53E-03 | 2.60E-03 | 2.54E-03 | 2.55E-03 | 2.48E-03 |
+| Test9.py  | 5.98E-04 | 7.07E-04 | 6.02E-04 | 6.20E-04 | 6.28E-04 | 5.99E-04 | 6.18E-04 | 6.16E-04 | 6.39E-04 | 6.26E-04 |
+| Test10.py | 1.82E-03 | 1.81E-03 | 1.76E-03 | 1.82E-03 | 1.83E-03 | 1.68E-03 | 1.82E-03 | 1.74E-03 | 1.73E-03 | 1.76E-03 |
+
+Table of Stats per Operation
+
+|           | Minimum  | Maximum  | Range    |
+| --------- | -------- | -------- | -------- |
+| Test1.py  | 9.25E-08 | 1.05E-07 | 1.23E-08 |
+| Test2.py  | 2.22E-03 | 2.35E-03 | 1.24E-04 |
+| Test3.py  | 2.63E-05 | 2.88E-05 | 2.42E-06 |
+| Test4.py  | 5.29E-07 | 5.39E-07 | 9.30E-09 |
+| Test5.py  | 2.01E-07 | 2.21E-07 | 2.05E-08 |
+| Test6.py  | 9.92E-03 | 1.36E-02 | 3.64E-03 |
+| Test7.py  | 2.42E-02 | 3.12E-02 | 6.95E-03 |
+| Test8.py  | 2.53E-03 | 2.70E-03 | 1.72E-04 |
+| Test9.py  | 5.98E-04 | 7.07E-04 | 1.09E-04 |
+| Test10.py | 1.68E-03 | 1.83E-03 | 1.52E-04 |
+
+The largest range is Test7.py which makes an HTTP connection and reads the HTML at 6.95E-03 seconds.
+
+-----
+Many factors influence the speed of each operation. It seems that the largest impact is the location of data and where it moves. Operations that stay in RAM, like calling a trivial function, are very fast. Operations that utilize the disk, such as loading a JSON from a file, are slower. Operations that require a wireless connection and data transfer between machines that may be hundreds or thousands of miles apart, like an HTTP request, are the slowest.
+
+Also important is the contexts in which execution takes place. A simple function call exists on one machine with no coordination, locking, syncing, etc. Systems calls transfer execution to the operating system, meaning the efficiency of the operating system partly determines speed. Moreover, connections to outside machines transfer execution to multiple different machines, so the entire chain of execution across machines influences speed.
+
+It makes intuitive sense that RAM > disk > wireless in terms of speed. Important to realize is how large the differences are between these operations. Making a wireless connection is orders of magnitude slower than file manipulation which is also orders of magnitude slower than accessing memory. Therefore, program efficiency requires smart design when handling data.
