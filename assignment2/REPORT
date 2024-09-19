@@ -1,6 +1,8 @@
 Eamon Tracey
 Distributed Systems Assignment 2
 -----
+OVERVIEW
+
 I have implemented a simple yet robust RPC server that supports read and write access to a spreadsheet data structure stored running on a distinct machine.
 
 When the server begins, it initializes an empty spreadsheet. Internally, the spreadsheet is stored as a dictionary where each key is a 2-tuple, representing a row-column pair, that maps to a value. For example, the spreadsheet {(1, 3): "data"} indicates that the spreadsheet has one populated cell in row 1 column 3 with the string "data". The spreadsheet supports five operations: insert, lookup, remove, query, and size, all of which are described in the assignment instructions.
@@ -9,7 +11,9 @@ After initializing the spreadsheet, the server begins listening on a specified p
 
 The client accesses the spreadsheet by sending a JSON message to the server. After processing, the server responds with a JSON message. The JSON messages are serialized more compactly with the pickle library. Further, all messages are prepended with 4 bytes that indicate the size of the message.
 -----
-A valid client message is a dictionary with two keys: "function" and "arguments". The "function" is a string that indicates what spreadsheet operation to perform (e.g., "insert"). The "arguments" is a dictionary containing keys that correspond to function parameters and values that correspond to the arguments. A successful server message is a dictionary with one "return" key contaning the value to return to the caller. The following examples demonstrate the five valid RPC operations:
+DETAILED EXAMPLES (SUCCESS)
+
+A valid client message is a dictionary with two keys: "function" and "arguments". The "function" is a string that indicates what spreadsheet operation to perform (e.g., "insert"). The "arguments" is a dictionary containing the parameters and arguments for the operation. A successful server message is a dictionary with one "return" key containing the value to return to the caller. The following examples demonstrate five valid RPC operations:
 
 spreadsheet_client.insert(2, 3, {"head": 4})
 client message -> {
@@ -79,6 +83,8 @@ server response -> {
     "return": None
 }
 -----
+DETAILED EXAMPLES (FAIL)
+
 It is possible that the client sends an invalid message. For example, the client may attempt to access a negative row or column, which raises an exception in the spreadsheet. To accomodate this, the server passes exceptions back to the client via "exception_name" and "exception_message". The client may then raise the exception to the caller with the appropriate message. The following examples demonstrate RPC operations that result in exceptions:
 
 spreadsheet_client.insert(-1, -1, "data")
@@ -117,6 +123,8 @@ server response -> {
     "exception_message": "an invalid or unsupported request was received"
 }
 -----
+PERFORMANCE SUMMARY
+
 Using TestPerf.py, I measured the throughput and latency of the insert, lookup, and remove options. I also measured the time it takes to perform a large query on a 50x50 spreadsheet. I ran `python3 SpreadSheetServer.py 12345` on student11.cse.nd.edu (SERVER) and `python3 TestPerf.py student11.cse.nd.edu 12345` on student10.cse.nd.edu (CLIENT). The results are below:
 
 Insert (2500)
@@ -134,3 +142,8 @@ Remove (2500)
     Throughput (ops/s): 12.111439333316234
     Latency (s): 0.08256656970977783
 -----
+SIGNIFICANCE OF RESULTS
+
+In the performance tests above, I ran the insert, lookup, and remove operations 2500 times each. I also queried the filled 50x50 spreadsheet, which returned a massive data structure. The results indicate that a simple RPC operation called by student10.cse.nd.edu onto student11.cse.nd.edu takes ~80ms. This means the throughput is ~12 RPC operations per second. This is extremely slow compared to running operations on a spreadsheet locally without the massive overhead of marshalling, TCP streaming, unmarshalling, etc.
+
+These results align with what was discovered in Assignment 1, namely that communication over a network is quite slow. In Assignment 1, the slowest operation involved making an HTTP request to a website, taking ~30ms. The HTTP request is comparable to the spreadsheet RPC operations since both use TCP to stream data. Thus, while RPC frameworks have many benefits such as offloading computation to a dedicated server, the major drawback is speed. Our major conclusion is that RPC operations are expensives.
