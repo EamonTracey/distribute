@@ -11,39 +11,126 @@ The client accesses the spreadsheet by sending a JSON message to the server. Aft
 -----
 A valid client message is a dictionary with two keys: "function" and "arguments". The "function" is a string that indicates what spreadsheet operation to perform (e.g., "insert"). The "arguments" is a dictionary containing keys that correspond to function parameters and values that correspond to the arguments. A successful server message is a dictionary with one "return" key contaning the value to return to the caller. The following examples demonstrate the five valid RPC operations:
 
-spreadsheet_client.insert(2, 3, {4: "head"})
-client message -> {"function": "insert", "arguments": {"row": 2, "col": 3, "value": {4: "head"}}}
-server response -> {"return": None}
+spreadsheet_client.insert(2, 3, {"head": 4})
+client message -> {
+    "function": "insert",
+    "arguments": {
+        "row": 2,
+        "col": 3,
+        "value": {
+            "head": 4
+        }
+    }
+}
+server response -> {
+    "return": None
+}
 
 spreadsheet_client.lookup(2, 3)
-client message -> {"function": "lookup", "arguments": {"row": 2, "col": 3}}
-server response -> {"return": {4: "head"}}
+client message -> {
+    "function": "lookup",
+    "arguments": {
+        "row": 2,
+        "col": 3
+    }
+}
+server response -> {
+    "return": {
+        "head": 4
+    }
+}
 
 spreadsheet_client.query(1, 1, 3, 2)
-client message -> {"function": "query", "arguments": {"row": 1, "col": 1, "width": 3, "height": 2}}
-server response -> {"return": {(2, 3): {4: "head"}}}
+client message -> {
+    "function": "query",
+    "arguments": {
+        "row": 1,
+        "col": 1,
+        "width": 3,
+        "height": 2
+    }
+}
+server response -> {
+  "return": {
+    (2, 3): {
+      "head": 4
+    }
+  }
+}
 
 spreadsheet_client.size()
-client message -> {"function": "size", "arguments": {}}
-server response -> {"return": (2, 3)}
+client message -> {
+    "function": "size",
+    "arguments": {}
+}
+server response -> {
+    "return": (2, 3)
+}
 
 spreadsheet_client.remove(2, 3)
-client message -> {"function": "remove", "arguments": {"row": 2, "col": 3}}
-server response -> {"return": None}
+client message -> {
+    "function": "remove",
+    "arguments": {
+        "row": 2,
+        "col": 3
+    }
+}
+server response -> {
+    "return": None
+}
 -----
 It is possible that the client sends an invalid message. For example, the client may attempt to access a negative row or column, which raises an exception in the spreadsheet. To accomodate this, the server passes exceptions back to the client via "exception_name" and "exception_message". The client may then raise the exception to the caller with the appropriate message. The following examples demonstrate RPC operations that result in exceptions:
 
 spreadsheet_client.insert(-1, -1, "data")
-client message -> {'function': 'insert', 'arguments': {'row': -1, 'col': -1, 'value': 'data'}}
-server response -> {'exception_name': 'ValueError', 'exception_message': 'row -1 cannot be negative'}
+client message -> {
+  "function": "insert",
+  "arguments": {
+    "row": -1,
+    "col": -1,
+    "value": "data"
+  }
+}
+server response -> {
+    "exception_name": "ValueError",
+    "exception_message": "row -1 cannot be negative"
+}
 
 spreadsheet_client.lookup(-1, -1)
-client message -> {'function': 'lookup', 'arguments': {'row': -1, 'col': -1}}
-server response -> {'exception_name': 'LookupError', 'exception_message': 'no data at row -1 column -1'}
+client message -> {
+    "function": "lookup",
+    "arguments": {
+        "row": -1,
+        "col": -1
+    }
+}
+server response -> {
+    "exception_name": "LookupError",
+    "exception_message": "no data at row -1 column -1"
+}
 
 Further, it is possible for the client to send garbage, unloadable data or a payload that does not have the proper "function" or "arguments" keys. In this event, the client responds with a generic exception:
 
 ~some broken client~
 client message -> {}
-server response -> {"exception_name": "ValueError", "exception_message": "an invalid or unsupported request was received"}
+server response -> {
+    "exception_name": "ValueError",
+    "exception_message": "an invalid or unsupported request was received"
+}
+-----
+Using TestPerf.py, I measured the throughput and latency of the insert, lookup, and remove options. I also measured the time it takes to perform a large query on a 50x50 spreadsheet. I ran `python3 SpreadSheetServer.py 12345` on student11.cse.nd.edu (SERVER) and `python3 TestPerf.py student11.cse.nd.edu 12345` on student10.cse.nd.edu (CLIENT). The results are below:
+
+Insert (2500)
+    Time (s): 205.28804683685303
+    Throughput (ops/s): 12.178010549181197
+    Latency (s): 0.08211521873474122
+Lookup (2500)
+    Time (s): 205.31698298454285
+    Throughput (ops/s): 12.17629425320462
+    Latency (s): 0.08212679319381713
+Query (2500)
+    Time (s): 0.04555320739746094
+Remove (2500)
+    Time (s): 206.41642427444458
+    Throughput (ops/s): 12.111439333316234
+    Latency (s): 0.08256656970977783
 -----
