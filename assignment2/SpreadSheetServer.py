@@ -28,7 +28,9 @@ class SpreadSheetServer:
             return None
 
         length = int.from_bytes(length, byteorder="big")
-        message = connection.recv(length)
+        message = bytes()
+        while len(message) < length:
+            message += connection.recv(length - len(message))
         if not message:
             return None
 

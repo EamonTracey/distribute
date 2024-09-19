@@ -45,7 +45,9 @@ class SpreadSheetClient:
             return None
 
         length = int.from_bytes(length, byteorder="big")
-        response = self._socket.recv(length)
+        response = bytes()
+        while len(response) < length:
+            response += self._socket.recv(length - len(response))
         if not response:
             return None
 
