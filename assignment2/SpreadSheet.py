@@ -1,5 +1,6 @@
 from typing import Any
 
+
 class SpreadSheet:
 
     def __init__(self):
@@ -34,21 +35,19 @@ class SpreadSheet:
 
         if row < 1:
             raise ValueError(f"row {row} cannot be negative")
-        if row + width - 1 > row_max:
+        if row + height - 1 > row_max:
             raise ValueError(
                 f"row {row + width - 1} exceeds number of rows {row_max}")
         if col < 1:
             raise ValueError(f"col {col} cannot be negative")
-        if col + height - 1 > col_max:
+        if col + width - 1 > col_max:
             raise ValueError(
                 f"col {col + height - 1} exceeds number of columns {col_max}")
 
-        values = [[None for _ in range(height)] for _ in range(width)]
-
+        values = {}
         for (r, c) in self._data:
-            if row <= r < row + width and col <= c < col + height:
-                values[row + width - r - 1][col + height - r -
-                                            1] = self._data[(r, c)]
+            if row <= r <= row + height - 1 and col <= c <= col + width - 1:
+                values[(r, c)] = self._data[(r, c)]
 
         return values
 

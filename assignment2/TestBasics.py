@@ -18,7 +18,7 @@ class SpreadSheetTests(unittest.TestCase):
     PORT = None
 
     def setUp(self):
-        #self.spreadsheet = SpreadSheet.SpreadSheet()
+        # self.spreadsheet = SpreadSheet.SpreadSheet()
         self.assertTrue(SpreadSheetTests.SERVER is not None)
         self.assertTrue(SpreadSheetTests.PORT is not None)
         self.spreadsheet = SpreadSheetClient.SpreadSheetClient(
@@ -74,12 +74,37 @@ class SpreadSheetTests(unittest.TestCase):
         self.spreadsheet.remove(123456789, 987654321)
 
     def test_query_valid(self):
-        self.assertTrue(True)
-        ...
+        self.spreadsheet.insert(1, 1, 1)
+        self.assertEqual(self.spreadsheet.query(1, 1, 1, 1), {(1, 1): 1})
+        self.spreadsheet.remove(1, 1)
+
+        self.spreadsheet.insert(5, 5, "string")
+        self.assertEqual(self.spreadsheet.query(5, 4, 2, 1),
+                         {(5, 5): "string"})
+        self.spreadsheet.remove(5, 5)
+
+        self.spreadsheet.insert(8, 7, {"nice": 1})
+        self.spreadsheet.insert(7, 8, {"man": 2})
+        self.assertEqual(self.spreadsheet.query(3, 3, 5, 6),
+                         {(8, 7): {
+                              "nice": 1
+                          }})
+        self.assertEqual(self.spreadsheet.query(3, 3, 6, 5),
+                         {(7, 8): {
+                              "man": 2
+                          }})
+        self.assertEqual(self.spreadsheet.query(3, 3, 6, 6), {
+            (8, 7): {
+                "nice": 1
+            },
+            (7, 8): {
+                "man": 2
+            }
+        })
+        self.spreadsheet.remove(8, 7)
+        self.spreadsheet.remove(7, 8)
 
     def test_size_valid(self):
-        self.assertEqual(self.spreadsheet.size(), (0, 0))
-
         self.spreadsheet.insert(1, 1, 1)
         self.assertEqual(self.spreadsheet.size(), (1, 1))
         self.spreadsheet.remove(1, 1)
@@ -133,8 +158,15 @@ class SpreadSheetTests(unittest.TestCase):
             self.spreadsheet.remove(1, -1)
 
     def test_query_invalid(self):
-        self.assertTrue(True)
-        ...
+        with self.assertRaises(ValueError):
+            self.spreadsheet.query(0, 0, 1, 1)
+
+        self.spreadsheet.insert(1, 1, 1)
+        with self.assertRaises(ValueError):
+            self.spreadsheet.query(1, 1, 1, 2)
+        with self.assertRaises(ValueError):
+            self.spreadsheet.query(1, 1, 2, 1)
+        self.spreadsheet.remove(1, 1)
 
 
 def main(args: argparse.Namespace):

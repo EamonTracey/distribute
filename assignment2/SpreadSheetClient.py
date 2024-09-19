@@ -3,6 +3,7 @@ import pickle
 import socket
 from typing import Any
 
+
 class SpreadSheetClient:
 
     def __init__(self, host: str, port: int):
@@ -42,9 +43,12 @@ class SpreadSheetClient:
         length = self._socket.recv(4)
         if not length:
             return None
-        length = int.from_bytes(length, byteorder="big")
 
-        response = self._socket.recv(length) or None
+        length = int.from_bytes(length, byteorder="big")
+        response = self._socket.recv(length)
+        if not response:
+            return None
+
         return response
 
     @_rpc
@@ -57,6 +61,7 @@ class SpreadSheetClient:
                 "value": value
             }
         }
+        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -65,6 +70,7 @@ class SpreadSheetClient:
     @_rpc
     def lookup(self, row: int, col: int) -> Any:
         payload = {"function": "lookup", "arguments": {"row": row, "col": col}}
+        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -79,6 +85,7 @@ class SpreadSheetClient:
                 "col": col,
             }
         }
+        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -96,6 +103,7 @@ class SpreadSheetClient:
                 "height": height
             }
         }
+        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -104,6 +112,7 @@ class SpreadSheetClient:
     @_rpc
     def size(self) -> tuple[int, int]:
         payload = {"function": "size", "arguments": {}}
+        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()

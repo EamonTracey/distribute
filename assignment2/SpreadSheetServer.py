@@ -4,6 +4,13 @@ import socket
 
 from SpreadSheet import SpreadSheet
 
+INVALID_REQUEST_RESPONSE = pickle.dumps({
+    "exception_name":
+    "ValueError",
+    "exception_message":
+    "an invalid or unsupported request was received"
+})
+
 
 class SpreadSheetServer:
 
@@ -19,14 +26,24 @@ class SpreadSheetServer:
         length = connection.recv(4)
         if not length:
             return None
-        length = int.from_bytes(length, byteorder="big")
-        print(length)
 
-        message = connection.recv(length) or None
+        length = int.from_bytes(length, byteorder="big")
+        message = connection.recv(length)
+        if not message:
+            return None
+
         return message
 
     def _generate_response(self, message: bytes) -> bytes:
-        payload = pickle.loads(message)
+        try:
+            payload = pickle.loads(message)
+        except pickle.PickleError:
+            return INVALID_REQUEST_RESPONSE
+
+        if type(payload) is not dict or len(
+                payload
+        ) != 2 or "function" not in payload or "arguments" not in payload:
+            return INVALID_REQUEST_RESPONSE
 
         function = payload["function"]
         arguments = payload["arguments"]
@@ -34,8 +51,7 @@ class SpreadSheetServer:
         exception_name = None
         exception_message = None
         try:
-            return_value = getattr(self.spreadsheet,
-                                   function)(**payload["arguments"])
+            return_value = getattr(self.spreadsheet, function)(**arguments)
         except Exception as exception:
             exception_name = type(exception).__name__
             exception_message = str(exception)
@@ -46,6 +62,7 @@ class SpreadSheetServer:
         else:
             payload["exception_name"] = exception_name
             payload["exception_message"] = exception_message
+        print(payload)
 
         response = pickle.dumps(payload)
         return response
@@ -87,4 +104,5 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("port", type=int)
     args = parser.parse_args()
+
     main(args)
