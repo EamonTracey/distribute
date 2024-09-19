@@ -61,7 +61,6 @@ class SpreadSheetClient:
                 "value": value
             }
         }
-        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -70,7 +69,6 @@ class SpreadSheetClient:
     @_rpc
     def lookup(self, row: int, col: int) -> Any:
         payload = {"function": "lookup", "arguments": {"row": row, "col": col}}
-        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -85,7 +83,6 @@ class SpreadSheetClient:
                 "col": col,
             }
         }
-        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -103,7 +100,6 @@ class SpreadSheetClient:
                 "height": height
             }
         }
-        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()
@@ -112,7 +108,6 @@ class SpreadSheetClient:
     @_rpc
     def size(self) -> tuple[int, int]:
         payload = {"function": "size", "arguments": {}}
-        print(payload)
         message = pickle.dumps(payload)
         self._send_message(message)
         response = self._receive_response()

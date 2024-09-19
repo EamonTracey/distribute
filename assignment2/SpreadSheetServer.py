@@ -62,7 +62,6 @@ class SpreadSheetServer:
         else:
             payload["exception_name"] = exception_name
             payload["exception_message"] = exception_message
-        print(payload)
 
         response = pickle.dumps(payload)
         return response
