@@ -30,19 +30,22 @@ class SpreadSheetServer:
         try:
             with open("sheet.ckpt", "rb") as fp:
                 self.spreadsheet = pickle.load(fp)
-            with open("sheet.log", "rb") as fp:
-                while True:
-                    try:
-                        payload = pickle.load(fp)
-                        function = payload["function"]
-                        arguments = payload["arguments"]
-                        getattr(self.spreadsheet, function)(**arguments)
-                    except Exception as exception:
-                        break
         except Exception as exception:
             # If there is any issue loading the checkpoint file,
             # then start with a blank sheet.
             self.spreadsheet = SpreadSheet()
+
+        with open("sheet.log", "rb+") as fp:
+            while True:
+                try:
+                    position = fp.tell()
+                    payload = pickle.load(fp)
+                    function = payload["function"]
+                    arguments = payload["arguments"]
+                    getattr(self.spreadsheet, function)(**arguments)
+                except Exception as exception:
+                    fp.truncate(position)
+                    break
 
     def _dump_checkpoint(self):
         with open(".sheet.ckpt", "wb") as fp:
