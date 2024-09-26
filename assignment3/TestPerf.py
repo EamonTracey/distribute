@@ -33,9 +33,12 @@ def main(args: argparse.Namespace):
 
     # Test performance of query.
     start = time.time()
-    spreadsheet.query(1, 1, SIZE, SIZE)
+    for _ in range(1, SIZE + 1):
+        for __ in range(1, SIZE + 1):
+            spreadsheet.query(1, 1, SIZE, SIZE)
     end = time.time()
     query_time = end - start
+
 
     # Test performance of remove.
     start = time.time()
@@ -66,6 +69,8 @@ def main(args: argparse.Namespace):
 
     print(f"Query ({n_operations})")
     print(f"    Time (s): {query_time}")
+    print(f"    Throughput (ops/s): {n_operations / query_time}")
+    print(f"    Latency (s): {query_time / n_operations}")
 
     print(f"Remove ({n_operations})")
     print(f"    Time (s): {remove_time}")
