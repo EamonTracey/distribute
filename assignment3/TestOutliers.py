@@ -29,7 +29,7 @@ def main(args: argparse.Namespace):
     for i in range(1, SIZE + 1):
         for j in range(1, SIZE + 1):
             start = time.time()
-    #        spreadsheet.remove(i, j)
+            spreadsheet.remove(i, j)
             end = time.time()
             remove_times.append(end - start)
 

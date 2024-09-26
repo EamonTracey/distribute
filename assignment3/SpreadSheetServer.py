@@ -16,8 +16,6 @@ INVALID_REQUEST_RESPONSE = pickle.dumps({
 class SpreadSheetServer:
 
     def __init__(self, port: int):
-        self.messages = 0
-
         open("sheet.log", "ab").close()
         self._load_checkpoint()
 
@@ -35,6 +33,7 @@ class SpreadSheetServer:
             # then start with a blank sheet.
             self.spreadsheet = SpreadSheet()
 
+        self._log_size = 0
         with open("sheet.log", "rb+") as fp:
             while True:
                 try:
@@ -43,20 +42,26 @@ class SpreadSheetServer:
                     function = payload["function"]
                     arguments = payload["arguments"]
                     getattr(self.spreadsheet, function)(**arguments)
+                    self._log_size += 1
                 except Exception as exception:
                     fp.truncate(position)
                     break
 
     def _dump_checkpoint(self):
+        # Dump the checkpoint.
         with open(".sheet.ckpt", "wb") as fp:
             pickle.dump(self.spreadsheet, fp)
         os.rename(".sheet.ckpt", "sheet.ckpt")
+
+        # Truncate the log.
         with open("sheet.log", "wb") as fp:
             fp.truncate(0)
+        self._log_size = 0
     
     def _log_payload(self, payload: dict):
         with open("sheet.log", "ab") as fp:
             pickle.dump(payload, fp)
+        self._log_size += 1
 
     def _receive_message(self, connection: socket.socket) -> bytes:
         length = connection.recv(4)
@@ -115,7 +120,7 @@ class SpreadSheetServer:
 
     def run(self):
         while True:
-            if self.messages % 100 == 0:
+            if self._log_size > 100:
                 self._dump_checkpoint()
             connection, _ = self._socket.accept()
             while True:
@@ -126,9 +131,8 @@ class SpreadSheetServer:
                     # If message is None, the connection has been closed.
                     if message is None:
                         break
-                    self.messages += 1
 
-                    if self.messages % 100 == 0:
+                    if self._log_size > 100:
                         self._dump_checkpoint()
 
                     # Generate the response to the RPC.
