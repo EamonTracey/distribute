@@ -51,6 +51,8 @@ class SpreadSheetServer:
         # Dump the checkpoint.
         with open(".sheet.ckpt", "wb") as fp:
             pickle.dump(self.spreadsheet, fp)
+            fp.flush()
+            os.fsync(fp)
         os.rename(".sheet.ckpt", "sheet.ckpt")
 
         # Truncate the log.
@@ -61,6 +63,8 @@ class SpreadSheetServer:
     def _log_payload(self, payload: dict):
         with open("sheet.log", "ab") as fp:
             pickle.dump(payload, fp)
+            fp.flush()
+            os.fsync(fp)
         self._log_size += 1
 
     def _receive_message(self, connection: socket.socket) -> bytes:

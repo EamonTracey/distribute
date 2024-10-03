@@ -3,7 +3,7 @@ Distributed Systems Assignment 3
 -----
 CHECKPOINT AND LOG FILES
 
-The updated version of SpreadSheetServer can recover the previous state of the spreadsheet after crash. The server keeps a transaction log in a file, sheet.log, that records ordered insert and remove operations. Every 100 insert/remove operations, the spreadsheet is dumped to a checkpoint file, sheet.ckpt, and the log is truncated to 0. Note if the server crashes after the checkpoint is dumped but before the log is truncated, recovery remains successful since insert and remove operations are idempotent.
+The updated version of SpreadSheetServer can recover the previous state of the spreadsheet after crash. The server keeps a transaction log in a file, sheet.log, that records ordered insert and remove operations. Every 100 insert/remove operations, the spreadsheet is dumped to a checkpoint file, sheet.ckpt, and the log is truncated to 0. Note if the server crashes after the checkpoint is dumped but before the log is truncated, recovery remains successful since insert and remove operations are idempotent. To ensure the log is always up-to-date, the server flushes and syncs sheet.log after every insret/remove operation.
 
 The checkpoint file is created using Python's built-in pickle library. The implementation uses pickle's binary format to serialize the SpreadSheet object to a file. Since the binary format is not friendly to this text file, I instead present an example checkpoint file using pickle's human-readable protocol. The following example shows the sheet.ckpt corresponding to a hydrated 3x3 spreadsheet checkpoint with 9 dictionaries of the form {"value": <random integer>}:
 
@@ -390,6 +390,8 @@ p6
 I3
 ss.```
 
+When the server begins running, it first initializes an empty log file if one does not already exist. Then, the server attempts to read a checkpoint file. If the checkpoint does not exist, then a blank spreadsheet is created. Next, the server iterates through each transaction in the log, applying the operation to the spreadsheet. If there is any error loading the next transaction, the sheet.log file is truncated to only include the first successful transactions. Finally, the server waits for a client to connect and resumes normal operation.
+
 -----
 SUMMARY OF TestPerf.py
 
@@ -398,40 +400,47 @@ The TestPerf.py script measures the throughput and latency of the five spreadshe
 I ran `python3 SpreadSheetServer.py 12345` on student10.cse.nd.edu and ran `python3 TestPerf.py student10.cse.nd.edu 12345` on student11.cse.nd.edu. The results are below:
 
 Insert (625)
-    Time (s): 53.65703082084656
-    Throughput (ops/s): 11.648054140132894
-    Latency (s): 0.08585124931335449
+    Time (s): 52.2911479473114
+    Throughput (ops/s): 11.952309798777996
+    Latency (s): 0.08366583671569824
 Lookup (625)
-    Time (s): 51.89483833312988
-    Throughput (ops/s): 12.043586993911056
-    Latency (s): 0.08303174133300781
+    Time (s): 51.29300332069397
+    Throughput (ops/s): 12.184897735318339
+    Latency (s): 0.08206880531311035
 Query (625)
-    Time (s): 26.886511087417603
-    Throughput (ops/s): 23.24585729877346
-    Latency (s): 0.04301841773986816
+    Time (s): 26.60981035232544
+    Throughput (ops/s): 23.487578142223814
+    Latency (s): 0.042575696563720705
 Remove (625)
-    Time (s): 53.97260236740112
-    Throughput (ops/s): 11.579949318461868
-    Latency (s): 0.08635616378784179
+    Time (s): 52.73923635482788
+    Throughput (ops/s): 11.850759381402874
+    Latency (s): 0.0843827781677246
 Size (625)
-    Time (s): 51.86594223976135
-    Throughput (ops/s): 12.050296842401986
-    Latency (s): 0.08298550758361817
+    Time (s): 51.285067081451416
+    Throughput (ops/s): 12.186783318570477
+    Latency (s): 0.08205610733032226
+
 -----
 SUMMARY OF TestOutliers.py
 
-The TestOutliers.py script measures individual insert and remove operations, tracking the minimum, maximum, and average times of each operation. Each operation is performed 625 times. We expect there to be a large difference between the maximum and minimum times for each operation since some operations (every 100th) must wait for the server to dump the spreadsheet to a checkpoint file.
-
+The TestOutliers.py script measures individual insert and remove operations, tracking the minimum, maximum, and average times of each operation. Each operation is performed 625 times. We expect there to be a large difference between the maximum and minimum times for each operation since some operations (every 100th) must wait for the server to dump the spreadsheet to a checkpoint file Further, we expect the average time to be slightly higher since each insert/remove operation appends, flushes, and syncs the log.
 
 I ran `python3 SpreadSheetServer.py 12345` on student10.cse.nd.edu and ran `python3 TestOutliers.py student10.cse.nd.edu 12345` on student11.cse.nd.edu. The results are below:
 
 Insert (625)
-    Minimum Time (s): 0.0033540725708007812
-    Maximum Time (s): 0.30673956871032715
-    Average Time (s): 0.08691693801879882
+    Minimum Time (s): 0.003515958786010742
+    Maximum Time (s): 0.3460674285888672
+    Average Time (s): 0.08458937683105469
 Remove (625)
-    Minimum Time (s): 0.043005943298339844
-    Maximum Time (s): 0.3968193531036377
-    Average Time (s): 0.08537205963134765
+    Minimum Time (s): 0.04290413856506348
+    Maximum Time (s): 0.27507567405700684
+    Average Time (s): 0.08413564224243164
+
 -----
 SIGNIFICANCE OF RESULTS
+
+Since every 100 insert/remove operations leads to a large disk operation (dumping the entire spreadsheet to a file), including writing, flush, and syncing, we expect the maximum time for insert/remove to be much larger than the minimum time. Further, since each insert/remove operation results in appending bytes to the log, we expect these operations to be slightly slower on average. The above results confirm our hypotheses.
+
+The TestPerf.py latency for an insert operation was 0.0836 while the previous (assignment 2) latency was 0.0821s. The TestPerf.py latency for a remove operation was 0.0843 while the previous (assignment 2) latency was 0.0825s. This indicates that there is a negligible difference in the latency between the persistence and no-persistence implementations. Further, the maximum time for an insert operation was 0.3460 and the maximum time for a remove operation was 0.2750. This is because these operations were 100th operations, causing an expensive large write to disk to dump the checkpoint. Thus, a client can expect a small percentage of their RPC operations to be notably slower.
+
+Therefore, we conclude that persistence in a distributed system adds complexity and decreases performance in the worst case. However, in our spreadsheet example, the average latency and throughput are not heavily impacted.
