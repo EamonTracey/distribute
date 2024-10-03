@@ -3,6 +3,7 @@ import json
 import pickle
 import socket
 import urllib.request
+import time
 from typing import Any
 
 NAMESERVER = "http://catalog.cse.nd.edu:9097/query.json"
@@ -17,12 +18,21 @@ class SpreadSheetClient:
 
     def _rpc(func):
 
-        def wrapper(*args, **kwargs):
-            response = func(*args, **kwargs)
-
-            # If the response is None, we have lost connection with the server.
-            if response is None:
-                raise ConnectionError("lost connection with the server")
+        def wrapper(self, *args, **kwargs):
+            payload = func(self, *args, **kwargs)
+            message = pickle.dumps(payload)
+            while True:
+                try:
+                    self._send_message(message)
+                    response = self._receive_response()
+                    if response is None:
+                        raise ConnectionError
+                    break
+                except Exception as exception:
+                    print(
+                        "Failed to contact server, attempting reconnect now"
+                    )
+                    self._connect()
 
             # Payload containing exception_name indicates we must raise an exception.
             payload = pickle.loads(response)
@@ -56,31 +66,39 @@ class SpreadSheetClient:
         return response
 
     def _connect(self):
-        payload: dict
-        with urllib.request.urlopen(NAMESERVER) as response:
-            payload = json.loads(response.read().decode())
+        timeout = 1
+        while True:
+            try:
+                payload: dict
+                with urllib.request.urlopen(NAMESERVER) as response:
+                    payload = json.loads(response.read().decode())
 
-        matches = []
-        for data in payload:
-            if ("type" in data and "project" in data
-                    and data["type"] == "spreadsheet"
-                    and data["project"] == self.name):
-                matches.append(data)
+                matches = []
+                for data in payload:
+                    if ("type" in data and "project" in data
+                            and data["type"] == "spreadsheet"
+                            and data["project"] == self.name):
+                        matches.append(data)
 
-        if not matches:
-            ...
+                host = matches[0]["address"]
+                port = matches[0]["port"]
+                heard = int(matches[0]["lastheardfrom"])
+                for match in matches:
+                    if match["lastheardfrom"] > heard:
+                        host = match["address"]
+                        port = match["port"]
+                        heard = int(match["lastheardfrom"])
 
-        host = matches[0]["address"]
-        port = matches[0]["port"]
-        heard = int(matches[0]["lastheardfrom"])
-        for match in matches:
-            if match["lastheardfrom"] > heard:
-                host = match["address"]
-                port = match["port"]
-                heard = int(match["lastheardfrom"])
-
-        self._socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self._socket.connect((self.host, self.port))
+                self._socket = socket.socket(socket.AF_INET,
+                                             socket.SOCK_STREAM)
+                self._socket.connect((host, port))
+                break
+            except Exception as exception:
+                print(
+                    f"Client failed to connect to {self.name}, attempting reconnect in {timeout} seconds"
+                )
+                time.sleep(timeout)
+                timeout *= 2
 
     @_rpc
     def insert(self, row: int, col: int, value: int):
@@ -92,18 +110,12 @@ class SpreadSheetClient:
                 "value": value
             }
         }
-        message = pickle.dumps(payload)
-        self._send_message(message)
-        response = self._receive_response()
-        return response
+        return payload
 
     @_rpc
     def lookup(self, row: int, col: int) -> Any:
         payload = {"function": "lookup", "arguments": {"row": row, "col": col}}
-        message = pickle.dumps(payload)
-        self._send_message(message)
-        response = self._receive_response()
-        return response
+        return payload
 
     @_rpc
     def remove(self, row: int, col: int):
@@ -114,10 +126,7 @@ class SpreadSheetClient:
                 "col": col,
             }
         }
-        message = pickle.dumps(payload)
-        self._send_message(message)
-        response = self._receive_response()
-        return response
+        return payload
 
     @_rpc
     def query(self, row: int, col: int, width: int,
@@ -131,15 +140,9 @@ class SpreadSheetClient:
                 "height": height
             }
         }
-        message = pickle.dumps(payload)
-        self._send_message(message)
-        response = self._receive_response()
-        return response
+        return payload
 
     @_rpc
     def size(self) -> tuple[int, int]:
         payload = {"function": "size", "arguments": {}}
-        message = pickle.dumps(payload)
-        self._send_message(message)
-        response = self._receive_response()
-        return response
+        return payload

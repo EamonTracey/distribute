@@ -8,11 +8,10 @@ SIZE = 25
 
 
 def main(args: argparse.Namespace):
-    server = args.server
-    port = args.port
+    name = args.name
 
     # spreadsheet = SpreadSheet.SpreadSheet()
-    spreadsheet = SpreadSheetClient.SpreadSheetClient(server, port)
+    spreadsheet = SpreadSheetClient.SpreadSheetClient(name)
     data = {"rk": 4}
 
     # Test performance of multiple inserts individually.
@@ -47,7 +46,6 @@ def main(args: argparse.Namespace):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("server", type=str)
-    parser.add_argument("port", type=int)
+    parser.add_argument("name", type=str)
     args = parser.parse_args()
     main(args)
