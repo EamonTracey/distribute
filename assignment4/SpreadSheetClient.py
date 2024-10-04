@@ -14,6 +14,7 @@ class SpreadSheetClient:
     def __init__(self, name):
         self.name = name
 
+        self._socket = None
         self._connect()
 
     def _rpc(func):
@@ -66,6 +67,9 @@ class SpreadSheetClient:
         return response
 
     def _connect(self):
+        if self._socket is not None:
+            self._socket.close()
+
         timeout = 1
         while True:
             try:
@@ -91,11 +95,12 @@ class SpreadSheetClient:
 
                 self._socket = socket.socket(socket.AF_INET,
                                              socket.SOCK_STREAM)
+                self._socket.settimeout(5)
                 self._socket.connect((host, port))
                 break
             except Exception as exception:
                 print(
-                    f"Client failed to connect to {self.name}, attempting reconnect in {timeout} seconds"
+                    f"Failed to connect to {self.name}, attempting reconnect in {timeout} seconds"
                 )
                 time.sleep(timeout)
                 timeout *= 2

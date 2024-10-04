@@ -4,7 +4,7 @@ import time
 import SpreadSheet
 import SpreadSheetClient
 
-SIZE = 5
+SIZE = 25
 
 
 def main(args: argparse.Namespace):
