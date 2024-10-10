@@ -57,29 +57,29 @@ def main(args: argparse.Namespace):
 
     n_operations = SIZE * SIZE
     print(f"Insert ({n_operations})")
-    print(f"    Time (s): {insert_time}")
-    print(f"    Throughput (ops/s): {n_operations / insert_time}")
-    print(f"    Latency (s): {insert_time / n_operations}")
+    print(f"    Time (s): {insert_time:.5f}")
+    print(f"    Throughput (ops/s): {n_operations / insert_time:.5f}")
+    print(f"    Latency (s): {insert_time / n_operations:.5f}")
 
     print(f"Lookup ({n_operations})")
-    print(f"    Time (s): {lookup_time}")
-    print(f"    Throughput (ops/s): {n_operations / lookup_time}")
-    print(f"    Latency (s): {lookup_time / n_operations}")
+    print(f"    Time (s): {lookup_time:.5f}")
+    print(f"    Throughput (ops/s): {n_operations / lookup_time:.5f}")
+    print(f"    Latency (s): {lookup_time / n_operations:.5f}")
 
     print(f"Query ({n_operations})")
-    print(f"    Time (s): {query_time}")
-    print(f"    Throughput (ops/s): {n_operations / query_time}")
-    print(f"    Latency (s): {query_time / n_operations}")
+    print(f"    Time (s): {query_time:.5f}")
+    print(f"    Throughput (ops/s): {n_operations / query_time:.5f}")
+    print(f"    Latency (s): {query_time / n_operations:.5f}")
 
     print(f"Remove ({n_operations})")
-    print(f"    Time (s): {remove_time}")
-    print(f"    Throughput (ops/s): {n_operations / remove_time}")
-    print(f"    Latency (s): {remove_time / n_operations}")
+    print(f"    Time (s): {remove_time:.5f}")
+    print(f"    Throughput (ops/s): {n_operations / remove_time:.5f}")
+    print(f"    Latency (s): {remove_time / n_operations:.5f}")
 
     print(f"Size ({n_operations})")
-    print(f"    Time (s): {size_time}")
-    print(f"    Throughput (ops/s): {n_operations / size_time}")
-    print(f"    Latency (s): {size_time / n_operations}")
+    print(f"    Time (s): {size_time:.5f}")
+    print(f"    Throughput (ops/s): {n_operations / size_time:.5f}")
+    print(f"    Latency (s): {size_time / n_operations:.5f}")
 
 
 if __name__ == "__main__":
