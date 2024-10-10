@@ -1,87 +1,12 @@
 Eamon Tracey
-Distributed Systems Assignment 4
+Distributed Systems Assignment 5
 -----
-SUMMARY OF TestPerf.py
+GENERAL SUMMARY
 
-After updating the server and client to utilize the catalog.cse.nd.edu nameserver and updating the client robustness, I benchmarked the application with TestPerf.py. I ran `python3 SpreadSheetServer.py etracey-a4` on student10.cse.nd.edu and `python3 TestPerf.py etracey-a4` on student11.cse.nd.edu. The results are below:
+I updated the SpreadSheetServer to handle multiple clients concurrently with an event-driven architecture. When the server socket is ready to accept a new connection, it accepts a new connection and adds it to the set of connections. Then, the server polls all active connections to determine those that are ready for reading. It handles one operation from each client whose socket is ready for reading. All sockets are polled using the select system call with a 0 second timeout.
 
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Failed to connect to etracey-a4, attempting reconnect in 2 seconds
-Failed to connect to etracey-a4, attempting reconnect in 4 seconds
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Insert (625)
-    Time (s): 66.91283082962036
-    Throughput (ops/s): 9.3405105157101
-    Latency (s): 0.10706052932739257
-Lookup (625)
-    Time (s): 53.42908763885498
-    Throughput (ops/s): 11.697747942554876
-    Latency (s): 0.08548654022216796
-Query (625)
-    Time (s): 26.737667083740234
-    Throughput (ops/s): 23.375262996676188
-    Latency (s): 0.04278026733398437
-Remove (625)
-    Time (s): 55.7382333278656
-    Throughput (ops/s): 11.213128990357493
-    Latency (s): 0.08918117332458496
-Size (625)
-    Time (s): 51.06209635734558
-    Throughput (ops/s): 12.2399988364381
-    Latency (s): 0.08169935417175293
-
-Note that the output includes multiple failures to connect to and contact the server. This is because I periodically shutdown the server while TestPerf.py was running. This tested my client to be truly robust and impacted the performance results (discussion below).
+NOTE: I also updated the client and server sockets to use the TCP_NODELAY option. This diables Nagle's buffering algorithm which massively increases the performance of our spreadsheet server.
 -----
-SUMMARY OF TestOutliers.py
-
-I also benchmarked the application with TestOutliers.py. I ran `python3 SpreadSheetServer.py etracey-a4` on student10.cse.nd.edu and `python3 TestOutliers.py etracey-a4` on student11.cse.nd.edu. The results are below:
-
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Failed to connect to etracey-a4, attempting reconnect in 2 seconds
-Failed to connect to etracey-a4, attempting reconnect in 4 seconds
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Failed to connect to etracey-a4, attempting reconnect in 2 seconds
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Failed to connect to etracey-a4, attempting reconnect in 2 seconds
-Failed to contact server, attempting reconnect now
-Failed to contact server, attempting reconnect now
-Failed to connect to etracey-a4, attempting reconnect in 1 seconds
-Insert (625)
-    Minimum Time (s): 0.0051174163818359375
-    Maximum Time (s): 7.242020130157471
-    Average Time (s): 0.10524432220458985
-Lookup (625)
-    Minimum Time (s): 0.0816795825958252
-    Maximum Time (s): 3.149111270904541
-    Average Time (s): 0.08779994659423829
-Query (625)
-    Minimum Time (s): 0.04209470748901367
-    Maximum Time (s): 0.08810591697692871
-    Average Time (s): 0.044417693710327145
-Remove (625)
-    Minimum Time (s): 0.014241933822631836
-    Maximum Time (s): 7.060100317001343
-    Average Time (s): 0.10143437728881836
-Size (625)
-    Minimum Time (s): 0.08095073699951172
-    Maximum Time (s): 0.08801054954528809
-    Average Time (s): 0.08287202796936036
-
-Again, note that the output includes multiple failures to connect to and contact the server. This impacted the performance results (discussion below).
+RAW OUTPUT OF TestPerf.py
 -----
-SIGNIFICANCE OF RESULTS
-
-The results from TestPerf.py and TestOutliers.py indicate that the client robustness does not drastically impact the average latency or throughput; however, the maximum time for an operation to complete is heavily impacted since it is possible that the client disconnects, pauses, reconnects, and retries multiple times during a single operation. TestPerf.py shows that the latency for all operations hovers around the 80ms, which is very similar to the previous assignments. However, in the TestOutliers.py run, the maximum time for an insert operation was more than 7 seconds. Similarly, the maximum time for lookup was ~3 seconds and the maximum time for remove was ~7 seconds. This largely differs from assignment 3 where the worst case operations were slightly longer (~300ms) due to dumping the checkpoint file. Now, the worst case operations occur because the server has failed and the client must reconnect and retry.
-
-Therefore, we conclude that adding nameserver functionality and client robustness have little impact on the best and average case performance. Yet, the worst case performance can be quite large (theoretically infinity) since the client will always refuse to fail, even if the server dies. Still, this is a reasonable tradeoff since the alternative worst case performance is client failure.
+DISCUSSION OF RESULTS

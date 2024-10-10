@@ -24,6 +24,7 @@ class SpreadSheetServer:
 
     def __init__(self, name: str):
         self.name = name
+        self._connections = set()
 
         open("sheet.log", "ab").close()
         self._load_checkpoint()
@@ -157,14 +158,22 @@ class SpreadSheetServer:
             if self._log_size > 100:
                 self._dump_checkpoint()
 
-            connection, _ = self._socket.accept()
-            while True:
+            # Accept one incoming connection if available.
+            readable, _, _ = select.select([self._socket], [], [], 0)
+            if readable:
+                connection, _ = self._socket.accept()
+                connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+                self._connections.add(connection)
+
+            readable, _, _ = select.select(self._connections, [], [], 0)
+            for connection in readable:
                 try:
                     # Receive a message from the connected user.
                     message = self._receive_message(connection)
 
                     # If message is None, the connection has been closed.
                     if message is None:
+                        self._connections.remove(connection)
                         break
 
                     if self._log_size > 100:

@@ -95,6 +95,7 @@ class SpreadSheetClient:
 
                 self._socket = socket.socket(socket.AF_INET,
                                              socket.SOCK_STREAM)
+                self._socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
                 self._socket.settimeout(5)
                 self._socket.connect((host, port))
                 break
