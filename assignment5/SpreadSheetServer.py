@@ -173,6 +173,7 @@ class SpreadSheetServer:
 
                     # If message is None, the connection has been closed.
                     if message is None:
+                        connection.close()
                         self._connections.remove(connection)
                         break
 
