@@ -58,15 +58,11 @@ class SpreadSheetTests(unittest.TestCase):
         self.spreadsheet.insert(1, 1, 1)
         self.assertEqual(self.spreadsheet.lookup(1, 1), 1)
         self.spreadsheet.remove(1, 1)
-        with self.assertRaises(LookupError):
-            self.spreadsheet.lookup(1, 1)
 
         self.spreadsheet.insert(3131, 1313, [92, 5, 3])
         self.assertEqual(self.spreadsheet.lookup(3131, 1313), [92, 5, 3])
         self.spreadsheet.remove(3131, 1313)
         self.spreadsheet.remove(3131, 1313)
-        with self.assertRaises(LookupError):
-            self.spreadsheet.lookup(3131, 1313)
 
         self.spreadsheet.remove(123456789, 987654321)
 
@@ -127,22 +123,14 @@ class SpreadSheetTests(unittest.TestCase):
             self.spreadsheet.insert(5, -1, 1)
 
     def test_lookup_invalid(self):
-        with self.assertRaises(LookupError):
+        with self.assertRaises(ValueError):
             self.spreadsheet.lookup(0, 0)
 
-        with self.assertRaises(LookupError):
+        with self.assertRaises(ValueError):
             self.spreadsheet.lookup(-1, 1)
 
-        with self.assertRaises(LookupError):
+        with self.assertRaises(ValueError):
             self.spreadsheet.lookup(1, -1)
-
-        with self.assertRaises(LookupError):
-            self.spreadsheet.lookup(1, 1)
-
-        self.spreadsheet.insert(5, 3, 1)
-        with self.assertRaises(LookupError):
-            self.spreadsheet.lookup(3, 5)
-        self.spreadsheet.remove(5, 3)
 
     def test_remove_invalid(self):
         with self.assertRaises(ValueError):
@@ -157,13 +145,6 @@ class SpreadSheetTests(unittest.TestCase):
     def test_query_invalid(self):
         with self.assertRaises(ValueError):
             self.spreadsheet.query(0, 0, 1, 1)
-
-        self.spreadsheet.insert(1, 1, 1)
-        with self.assertRaises(ValueError):
-            self.spreadsheet.query(1, 1, 1, 2)
-        with self.assertRaises(ValueError):
-            self.spreadsheet.query(1, 1, 2, 1)
-        self.spreadsheet.remove(1, 1)
 
 
 def main(args: argparse.Namespace):

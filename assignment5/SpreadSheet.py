@@ -15,8 +15,13 @@ class SpreadSheet:
         self._data[(row, col)] = value
 
     def lookup(self, row: int, col: int) -> Any:
+        if row < 1:
+            raise ValueError(f"row {row} cannot be negative")
+        if col < 1:
+            raise ValueError(f"column {col} cannot be negative")
+
         if (row, col) not in self._data:
-            raise LookupError(f"no data at row {row} column {col}")
+            return None
 
         return self._data[(row, col)]
 
@@ -35,14 +40,8 @@ class SpreadSheet:
 
         if row < 1:
             raise ValueError(f"row {row} cannot be negative")
-        if row + height - 1 > row_max:
-            raise ValueError(
-                f"row {row + width - 1} exceeds number of rows {row_max}")
         if col < 1:
             raise ValueError(f"col {col} cannot be negative")
-        if col + width - 1 > col_max:
-            raise ValueError(
-                f"col {col + height - 1} exceeds number of columns {col_max}")
 
         values = {}
         for (r, c) in self._data:
