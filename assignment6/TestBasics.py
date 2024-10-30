@@ -1,6 +1,7 @@
 import argparse
 import unittest
 
+import ClusterClient
 import SpreadSheet
 import SpreadSheetClient
 
@@ -15,11 +16,16 @@ class SpreadSheetTests(unittest.TestCase):
     """
 
     NAME = None
+    N = None
+    K = None
 
     def setUp(self):
         # self.spreadsheet = SpreadSheet.SpreadSheet()
         self.assertTrue(SpreadSheetTests.NAME is not None)
-        self.spreadsheet = SpreadSheetClient.SpreadSheetClient(SpreadSheetTests.NAME)
+        self.assertTrue(SpreadSheetTests.N is not None)
+        self.assertTrue(SpreadSheetTests.K is not None)
+        # self.spreadsheet = SpreadSheetClient.SpreadSheetClient(SpreadSheetTests.NAME)
+        self.spreadsheet = ClusterClient.ClusterClient(SpreadSheetTests.NAME, SpreadSheetTests.N, SpreadSheetTests.K)
         self.assertEqual(self.spreadsheet.size(), (0, 0))
 
     def test_insert_valid(self):
@@ -149,6 +155,8 @@ class SpreadSheetTests(unittest.TestCase):
 
 def main(args: argparse.Namespace):
     SpreadSheetTests.NAME = args.name
+    SpreadSheetTests.N = args.n
+    SpreadSheetTests.K = args.k
 
     loader = unittest.TestLoader()
     suite = loader.loadTestsFromTestCase(SpreadSheetTests)
@@ -159,5 +167,7 @@ def main(args: argparse.Namespace):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("name", type=str)
+    parser.add_argument("n", type=int)
+    parser.add_argument("k", type=int)
     args = parser.parse_args()
     main(args)

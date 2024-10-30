@@ -150,8 +150,7 @@ class SpreadSheetServer:
 
     def _send_response(self, response: bytes, connection: socket.socket):
         length = len(response).to_bytes(4, byteorder="big")
-        connection.sendall(length)
-        connection.sendall(response)
+        connection.sendall(length + response)
 
     def run(self):
         while True:
