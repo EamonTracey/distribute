@@ -1,6 +1,7 @@
 import argparse
 import time
 
+import ClusterClient
 import SpreadSheet
 import SpreadSheetClient
 
@@ -9,9 +10,12 @@ SIZE = 50
 
 def main(args: argparse.Namespace):
     name = args.name
+    n = args.n
+    k = args.k
 
     # spreadsheet = SpreadSheet.SpreadSheet()
-    spreadsheet = SpreadSheetClient.SpreadSheetClient(name)
+    # spreadsheet = SpreadSheetClient.SpreadSheetClient(name)
+    spreadsheet = ClusterClient.ClusterClient(name, n, k)
     data = {"rk": 4}
 
     # Test performance of multiple inserts individually.
@@ -89,5 +93,7 @@ def main(args: argparse.Namespace):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("name", type=str)
+    parser.add_argument("n", type=int)
+    parser.add_argument("k", type=int)
     args = parser.parse_args()
     main(args)
