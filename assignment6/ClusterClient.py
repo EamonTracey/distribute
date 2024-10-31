@@ -18,18 +18,10 @@ class ClusterClient:
 
     @staticmethod
     def _hash(n1: int, n2: int):
-        # Convert the 2 integers to a string of bytes.
-        data = n1.to_bytes((n1.bit_length() + 7) // 8, signed=True) + n2.to_bytes(
-            (n2.bit_length() + 7) // 8, signed=True)
-
-        # Apply the FNV-1a hash function.
-        fnv_prime = 0x01000193
-        hash_value = 0x811c9dc5
-        upper_bound = 2**32
-        for byte in data:
-            hash_value ^= byte
-            hash_value = (hash_value * fnv_prime) % upper_bound
-
+        # The hash can be extremely simple. Using addition means that cells
+        # further from (1, 1) will be managed by higher-numbered servers
+        # (until wraparound).
+        hash_value = n1 + n2
         return hash_value
 
     def insert(self, row: int, col: int, value: int):
